@@ -75,7 +75,12 @@ const LoginLog = () => {
 
   return (
     <AppLayout title="Daftar Login">
-      <Table dataSource={listLogin} columns={columns} loading={isLoading} />
+      <Table
+        dataSource={listLogin}
+        columns={columns}
+        loading={isLoading}
+        scroll={{ x: true }}
+      />
     </AppLayout>
   );
 };

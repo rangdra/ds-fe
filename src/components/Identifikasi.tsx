@@ -30,14 +30,13 @@ import { useEffect, useRef, useState } from 'react';
 import axios from '../configs/axios';
 import styled from 'styled-components';
 import { useGlobalContext } from '../context/GlobalContext';
-import { IPertanyaan } from '../screens/Pertanyaan';
-import { IGejala } from '../screens/Gejala';
 import theme from '../theme';
-import ErrorComp from './ErrorComp';
 import moment from 'moment';
 import { IUser } from '../types';
 import { HasilIdentifikasi } from './HasilIdentifikasi';
 import LoadingComp from './LoadingComp';
+import { removeDuplicateData, sortRules } from '../helpers';
+import { IRule } from '../screens/Rule';
 
 interface IMahasiswa {
   name: string;
@@ -59,7 +58,7 @@ const Identifikasi: React.FC = () => {
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
   const [listMahasiswa, setListMahasiswa] = useState<IUser[]>([]);
-  const [listPertanyaan, setListPertanyaan] = useState<IPertanyaan[]>([]);
+  const [rekomendasi, setRekomendasi] = useState<any>([]);
   const [listRule, setListRule] = useState<any>([]);
   const [hasil, setHasil] = useState<any>();
   const componentRef = useRef<any>();
@@ -166,7 +165,34 @@ const Identifikasi: React.FC = () => {
         mhsId,
       });
 
-      console.log(res.data);
+      const rekomRules = sortRules(listRule, arrEvId);
+
+      let rulePotensiTinggi = [];
+      let rulePotensiSedang = [];
+      let rulePotensiRendah = [];
+
+      for (const item of rekomRules) {
+        const arrKode = item.problems.map((x) => x.code);
+
+        if (arrKode.includes('KG3')) {
+          rulePotensiTinggi.push(item);
+        }
+        if (arrKode.includes('KG2')) {
+          rulePotensiSedang.push(item);
+        }
+        if (arrKode.includes('KG1')) {
+          rulePotensiRendah.push(item);
+        }
+      }
+
+      const resR = [
+        ...rulePotensiTinggi,
+        ...rulePotensiSedang,
+        ...rulePotensiRendah,
+      ];
+
+      setRekomendasi(removeDuplicateData(resR));
+
       setCurrent(current + 1);
       setHasil(res.data);
       form.resetFields();
@@ -286,7 +312,7 @@ const Identifikasi: React.FC = () => {
                     {listRule.map((list: any, index: number) => (
                       <Form.Item
                         key={list?._id}
-                        label={list?.evidence.name}
+                        label={`${index + 1}. ${list?.evidence.name}`}
                         name={`evidence_${index + 1}`}
                       >
                         <Radio.Group>
@@ -358,10 +384,14 @@ const Identifikasi: React.FC = () => {
                       />
                     ))} */}
 
-                    {hasil?.evidences.map((item: IGejala) => (
+                    {rekomendasi?.map((item: IRule) => (
                       <Row style={{ gap: 8 }}>
-                        <Typography.Text strong>{item.name}: </Typography.Text>
-                        <Typography.Text>{item.description}</Typography.Text>
+                        <Typography.Text strong>
+                          {item?.evidence.name}:{' '}
+                        </Typography.Text>
+                        <Typography.Text>
+                          {item.evidence.description}
+                        </Typography.Text>
                       </Row>
                     ))}
                   </CustomCard>

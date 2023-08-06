@@ -69,12 +69,24 @@ export default function Gejala() {
 
   const columns = [
     {
-      title: 'Kode Kriteria',
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      render: (no: number) => <div>{no}</div>,
+    },
+    {
+      title: 'Tanggal dibuat',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: any) => <div>{moment(date).format('DD MMM YYYY')}</div>,
+    },
+    {
+      title: 'Kode',
       dataIndex: 'code',
       key: 'code',
     },
     {
-      title: 'Nama Kriteria',
+      title: 'Nama',
       dataIndex: 'name',
       key: 'name',
     },
@@ -91,14 +103,9 @@ export default function Gejala() {
         />
       ),
     },
-    {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (date: any) => <>{moment(date).format('DD MMM YYYY')}</>,
-    },
+
     isAdmin && {
-      title: 'Action',
+      title: 'Aksi',
       dataIndex: 'action',
       key: 'action',
       render: (_: any, record: IGejala) => {
@@ -146,7 +153,12 @@ export default function Gejala() {
     setIsLoading(true);
     try {
       const res = await axios.get('/evidence');
-      setListGejala(res.data);
+      setListGejala(
+        res.data.map((item: any, idx: number) => ({
+          no: idx + 1,
+          ...item,
+        }))
+      );
     } catch (error: any) {
       message.error('Something went wrong!');
       console.log(error);
@@ -228,7 +240,12 @@ export default function Gejala() {
         </div>
       )}
 
-      <Table dataSource={listGejala} columns={columns} loading={isLoading} />
+      <Table
+        dataSource={listGejala}
+        columns={columns}
+        loading={isLoading}
+        scroll={{ x: 250 }}
+      />
       {/* Tambah */}
       <Modal
         title={isEdit ? 'Edit Kriteria' : 'Tambah Kriteria'}

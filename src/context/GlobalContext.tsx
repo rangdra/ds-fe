@@ -73,7 +73,9 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
       Cookies.set('token', tokenBase64, { expires: 7 });
       const user: IUser = jwtDecode(res.data.token);
       setCurrentUser(user);
-      message.success(`Hai ${user.fullname || ''} Anda telah berhasil login`);
+      message.success(
+        `Hai ${user.fullname || ''}, selamat datang di akun Anda!`
+      );
       setLoading(false);
       navigate('/dashboard');
     } catch (error: any) {
@@ -97,7 +99,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
           const tokenBase64 = btoa(res.data.token);
           Cookies.set('token', tokenBase64, { expires: 7 });
           setCurrentUser(user);
-          message.success(`Hai ${user.fullname}, Anda telah berhasil login`);
+          message.success(`Hai ${user.fullname}, selamat datang di akun Anda!`);
           navigate('/dashboard');
         }
       } else {
@@ -111,7 +113,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
           const tokenBase64 = btoa(res.data.token);
           Cookies.set('token', tokenBase64, { expires: 7 });
           setCurrentUser(user);
-          message.success(`Hai ${user.fullname}, Anda telah berhasil login`);
+          message.success(`Hai ${user.fullname}, selamat datang di akun Anda!`);
           navigate('/dashboard');
         }
       }
@@ -138,7 +140,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
       const user: IUser = jwtDecode(res.data.token);
       setCurrentUser(user);
       message.success(
-        `Hai ${resGoogle.user.displayName}, Anda telah berhasil login ke akun Anda.`
+        `Hai ${resGoogle.user.displayName}, selamat datang di akun Anda!`
       );
       setLoading(false);
       navigate('/dashboard');

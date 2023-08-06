@@ -44,14 +44,25 @@ export const Header = styled.div`
     .left {
       display: flex;
       align-items: center;
+      gap: 8px;
 
       h2 {
         margin: 0px;
-        font-size: 28px;
+        font-size: 22px;
         font-weight: bold;
         /* width: 90%; */
         /* letter-spacing: 3px; */
         color: ${(props) => props.theme.gray700};
+      }
+    }
+  }
+
+  @media only screen and (min-width: 992px) {
+    .header-menu {
+      .left {
+        h2 {
+          font-size: 28px;
+        }
       }
     }
   }

@@ -66,12 +66,24 @@ const KategoriDO = () => {
 
   const columns = [
     {
-      title: 'Kode Kategori',
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      render: (no: number) => <div>{no}</div>,
+    },
+    {
+      title: 'Tanggal dibuat',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: any) => <>{moment.utc(date).format('DD MMM YYYY')}</>,
+    },
+    {
+      title: 'Kode',
       dataIndex: 'code',
       key: 'code',
     },
     {
-      title: 'Nama Kategori',
+      title: 'Nama',
       dataIndex: 'name',
       key: 'name',
     },
@@ -84,14 +96,9 @@ const KategoriDO = () => {
     //     <div dangerouslySetInnerHTML={{ __html: text ? text : 'Not Set' }} />
     //   ),
     // },
-    {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (date: any) => <>{moment.utc(date).format('DD MMM YYYY')}</>,
-    },
+
     isAdmin && {
-      title: 'Action',
+      title: 'Aksi',
       dataIndex: 'action',
       key: 'action',
       render: (_: any, record: IKategori) => {
@@ -140,7 +147,12 @@ const KategoriDO = () => {
     setIsLoading(true);
     try {
       const res = await axios.get('/problems');
-      setListKategori(res.data);
+      setListKategori(
+        res.data.map((item: any, idx: number) => ({
+          no: idx + 1,
+          ...item,
+        }))
+      );
     } catch (error: any) {
       message.error('Something went wrong!');
       console.log(error);
@@ -219,7 +231,13 @@ const KategoriDO = () => {
         </div>
       )}
 
-      <Table dataSource={listKategori} columns={columns} loading={isLoading} />
+      <Table
+        dataSource={listKategori}
+        columns={columns}
+        loading={isLoading}
+        pagination={false}
+        scroll={{ x: 250 }}
+      />
       {/* Tambah */}
       <Modal
         title={isEdit ? 'Edit Kategori' : 'Tambah Kategori'}

@@ -1,4 +1,4 @@
-import { Button, Card, Col, Divider, Row, Typography } from 'antd';
+import { Button, Card, Col, Divider, Grid, Row, Typography } from 'antd';
 import {
   RightOutlined,
   ClusterOutlined,
@@ -19,6 +19,7 @@ import ContentDashboard from '../../components/ContentDashboard';
 import styled from 'styled-components';
 
 const Dashboard: React.FC = () => {
+  const { lg } = Grid.useBreakpoint();
   const { isMhs, isSuperAdmin, isAdmin } = useGlobalContext();
   const navigate = useNavigate();
   const [totalData, setTotalData] = useState({
@@ -49,7 +50,7 @@ const Dashboard: React.FC = () => {
 
         console.log(resMhs.data);
 
-        const mhsRendah = resMhs.data.filter((mhs) => {
+        const mhsRendah = resMhs.data.filter((mhs: any) => {
           if (
             !mhs.lastIdentification._id ||
             !mhs.lastIdentification.problem ||
@@ -60,7 +61,7 @@ const Dashboard: React.FC = () => {
           return mhs.lastIdentification.problem[0].code === 'KG1';
         });
 
-        const mhsSedang = resMhs.data.filter((mhs) => {
+        const mhsSedang = resMhs.data.filter((mhs: any) => {
           if (
             !mhs.lastIdentification._id ||
             !mhs.lastIdentification.problem ||
@@ -71,7 +72,7 @@ const Dashboard: React.FC = () => {
           return mhs.lastIdentification.problem[0].code === 'KG2';
         });
 
-        const mhsTinggi = resMhs.data.filter((mhs) => {
+        const mhsTinggi = resMhs.data.filter((mhs: any) => {
           if (
             !mhs.lastIdentification._id ||
             !mhs.lastIdentification.problem ||
@@ -105,7 +106,7 @@ const Dashboard: React.FC = () => {
       ) : !isMhs ? (
         <>
           <Row gutter={[16, 16]}>
-            <Col span={8}>
+            <Col span={24} xl={8} lg={12}>
               <CustomCard onClick={() => navigate(`/mahasiswa`)}>
                 <div className="left">
                   <IconWrapper>
@@ -125,8 +126,8 @@ const Dashboard: React.FC = () => {
               </CustomCard>
             </Col>
             {isAdmin && (
-              <Col span={8}>
-                <CustomCard onClick={() => navigate(`/users`)}>
+              <Col span={24} xl={8} lg={12}>
+                <CustomCard onClick={() => navigate(`/data-admin`)}>
                   <div className="left">
                     <IconWrapper>
                       <UserOutlined />
@@ -146,7 +147,7 @@ const Dashboard: React.FC = () => {
               </Col>
             )}
 
-            <Col span={8}>
+            <Col span={24} xl={8} lg={12}>
               <CustomCard onClick={() => navigate(`/kategori-do`)}>
                 <div className="left">
                   <IconWrapper>
@@ -165,7 +166,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </CustomCard>
             </Col>
-            <Col span={8}>
+            <Col span={24} xl={8} lg={12}>
               <CustomCard onClick={() => navigate(`/gejala-do`)}>
                 <div className="left">
                   <IconWrapper>
@@ -184,7 +185,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </CustomCard>
             </Col>
-            <Col span={8}>
+            <Col span={24} xl={8} lg={12}>
               <CustomCard onClick={() => navigate(`/rules`)}>
                 <div className="left">
                   <IconWrapper>
@@ -206,17 +207,22 @@ const Dashboard: React.FC = () => {
           </Row>
           <div
             style={{
-              marginTop: 70,
+              marginTop: lg ? 70 : 50,
               display: 'flex',
               justifyContent: 'center',
             }}
           >
             <div
               style={{
-                width: '80%',
+                width: lg ? '80%' : '90%',
               }}
             >
-              <Row gutter={[24, 24]}>
+              <Row
+                gutter={[
+                  { xs: 0, sm: 24 },
+                  { xs: 12, sm: 24 },
+                ]}
+              >
                 <Col span={24}>
                   <div
                     style={{
@@ -237,7 +243,7 @@ const Dashboard: React.FC = () => {
                     </Typography.Text>
                   </div>
                 </Col>
-                <Col span={8}>
+                <Col span={24} xl={8} lg={12}>
                   <CustomCard2 bgColor="#5e81c7" hoverable>
                     <Typography.Text className="title" strong>
                       Potensi Rendah
@@ -250,7 +256,7 @@ const Dashboard: React.FC = () => {
                     </Typography.Text>
                   </CustomCard2>
                 </Col>
-                <Col span={8}>
+                <Col span={24} xl={8} lg={12}>
                   <CustomCard2 bgColor="#f8bf28" hoverable>
                     <Typography.Text className="title" strong>
                       Potensi Sedang
@@ -263,7 +269,7 @@ const Dashboard: React.FC = () => {
                     </Typography.Text>
                   </CustomCard2>
                 </Col>
-                <Col span={8}>
+                <Col span={24} xl={8} lg={12}>
                   <CustomCard2 bgColor="#f59081" hoverable>
                     <Typography.Text className="title" strong>
                       Potensi Tinggi

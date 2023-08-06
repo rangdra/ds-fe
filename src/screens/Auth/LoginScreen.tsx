@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Grid, Input } from 'antd';
 import IllustLogin from '../../assets/illust.png';
 import GoogleIcon from '../../assets/google-icon.png';
 import { useGlobalContext } from '../../context/GlobalContext';
@@ -15,7 +15,8 @@ import {
 } from './styles';
 
 export default function LoginScreen() {
-  const { login, loading, loginWithGoogle } = useGlobalContext();
+  const { lg } = Grid.useBreakpoint();
+  const { login, loading } = useGlobalContext();
   const onFinish = (values: any) => {
     login(values);
   };
@@ -29,11 +30,10 @@ export default function LoginScreen() {
           autoComplete="off"
           layout="vertical"
         >
-          {/* <h2>Masuk</h2> */}
+          {' '}
           <div className="flex justify-center">
             <img src={Logo} alt="logo" className="h-[90px] w-[90px] mb-4" />
           </div>
-
           {/* <Form.Item
             label="Email"
             name="email"
@@ -47,7 +47,6 @@ export default function LoginScreen() {
           >
             <Input size="large" />
           </Form.Item> */}
-
           <Form.Item
             label="NIM"
             name="username"
@@ -60,7 +59,6 @@ export default function LoginScreen() {
           >
             <Input size="large" />
           </Form.Item>
-
           <Form.Item
             label="Password"
             name="password"
@@ -70,7 +68,6 @@ export default function LoginScreen() {
           >
             <Input.Password size="large" />
           </Form.Item>
-
           <Form.Item style={{ marginBottom: 8 }}>
             <ButtonSubmit
               type="primary"

@@ -44,11 +44,17 @@ const Content = styled.div`
       font-size: 24px;
     }
 
-    width: 60%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 8px;
+  }
+
+  @media only screen and (min-width: 992px) {
+    .inner {
+      width: 60%;
+    }
   }
 `;

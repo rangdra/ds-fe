@@ -13,7 +13,7 @@ export default function UserAvatar({ isDashboard }: { isDashboard?: boolean }) {
     },
     {
       key: '3',
-      label: <a onClick={logout}>Logout</a>,
+      label: <a onClick={logout}>Keluar</a>,
     },
   ];
 

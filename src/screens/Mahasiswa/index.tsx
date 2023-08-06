@@ -2,6 +2,7 @@ import {
   Alert,
   Button,
   Form,
+  Grid,
   Input,
   Modal,
   Select,
@@ -13,16 +14,16 @@ import {
   message,
 } from 'antd';
 import { EditOutlined, DeleteFilled } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import axios from '../../configs/axios';
 import moment from 'moment';
 import AppLayout from '../../components/AppLayout';
 import { IMahasiswa, IUser } from '../../types';
 import { useGlobalContext } from '../../context/GlobalContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ValueSet from '../../components/ValueSet';
-import XLSX from 'xlsx';
-import { Excel } from 'antd-table-saveas-excel';
+import { ExportToExcel } from '../../components/ExportToExcel';
+import theme from '../../theme';
 
 const initialMahasiswa = {
   fullname: '',
@@ -32,6 +33,7 @@ const initialMahasiswa = {
 };
 
 const MahasiswaDO = () => {
+  const { lg } = Grid.useBreakpoint();
   const navigate = useNavigate();
   const { isAdmin, isMhs } = useGlobalContext();
   const [form] = Form.useForm();
@@ -51,17 +53,29 @@ const MahasiswaDO = () => {
 
   const columns = [
     {
-      title: 'Nama Mahasiswa',
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      render: (no: number) => <div>{no}</div>,
+    },
+    {
+      title: 'Tanggal dibuat',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: any) => <div>{moment(date).format('DD MMM YYYY')}</div>,
+    },
+    {
+      title: 'Nama',
       dataIndex: 'fullname',
       key: 'fullname',
-      width: '20%',
+      width: '15%',
       render: (text: string, record: any) => (
-        <Button
-          onClick={() => navigate(`/hasil/${record?.lastIdentification?._id}`)}
-          type="link"
+        <Link
+          style={{ color: theme.gray800, textDecoration: 'underline' }}
+          to={`/hasil/${record?.lastIdentification?._id}`}
         >
           {text}
-        </Button>
+        </Link>
       ),
     },
     {
@@ -90,15 +104,6 @@ const MahasiswaDO = () => {
         <ValueSet value={record?.mahasiswa?.jenjang} />
       ),
     },
-
-    {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (date: any) => (
-        <>{moment(date).format('DD MMM YYYY, HH:MM:ss')}</>
-      ),
-    },
     {
       title: 'Potensi Drop Out',
       dataIndex: 'potensi',
@@ -109,13 +114,17 @@ const MahasiswaDO = () => {
             <Tag>{prob?.name}</Tag>
           ))} */}
 
-          <Tag>{record?.lastIdentification?.problem[0]?.name || ''}</Tag>
+          <Tag>
+            {record?.lastIdentification?.problem
+              ? record?.lastIdentification?.problem?.[0]?.name
+              : '-'}
+          </Tag>
         </Space>
       ),
     },
 
     isAdmin && {
-      title: 'Action',
+      title: 'Aksi',
       dataIndex: 'action',
       key: 'action',
       render: (_: any, record: any) => {
@@ -161,13 +170,16 @@ const MahasiswaDO = () => {
     },
   ].filter(Boolean) as TableProps<any>['columns'];
 
-  console.log(listMahasiswa);
-
   const getMahasiswa = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get('/mahasiswa');
-      setListMahasiswa(res.data);
+      setListMahasiswa(
+        res.data.map((item: any, idx: number) => ({
+          no: idx + 1,
+          ...item,
+        }))
+      );
     } catch (error: any) {
       message.error('Something went wrong!');
       console.log(error);
@@ -245,27 +257,42 @@ const MahasiswaDO = () => {
     return sortedMhs;
   };
 
+  const list = transformData().map((mhs) => ({
+    'Nama Mahasiswa': mhs.fullname,
+    NIM: mhs.mahasiswa.nim,
+    Jurusan: mhs.mahasiswa.jurusan,
+    Jenjang: mhs.mahasiswa.jenjang,
+    'Potensi Drop Out': (mhs as any).lastIdentification.problem
+      ? (mhs as any).lastIdentification.problem[0].name
+      : '-',
+  }));
+
   return (
     <AppLayout title="Daftar Mahasiswa">
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           justifyContent: 'space-between',
           marginBottom: 12,
+          gap: 12,
         }}
       >
         <Input.Search
           placeholder="Cari mahasiswa berdasarkan nama atau nim..."
-          style={{ width: '50%' }}
+          style={{ width: lg ? '50%' : '100%' }}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-        />{' '}
+        />
+
+        <ExportToExcel apiData={list} fileName="mahasiswa" />
       </div>
 
       <Table
         dataSource={transformData()}
         columns={columns}
         loading={isLoading}
+        scroll={{ x: true }}
       />
       {/* Tambah */}
       <Modal

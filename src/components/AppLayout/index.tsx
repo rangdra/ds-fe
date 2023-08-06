@@ -13,9 +13,10 @@ import {
   HistoryOutlined,
   QuestionOutlined,
   RiseOutlined,
+  MenuOutlined,
 } from '@ant-design/icons';
 
-import { Button, Divider, MenuProps } from 'antd';
+import { Button, Divider, Dropdown, Grid, MenuProps, Row } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Logo from '../../assets/logo-pranata.png';
 import { useGlobalContext } from '../../context/GlobalContext';
@@ -50,6 +51,7 @@ const AppLayout = ({
   children: ReactNode;
   title?: string;
 }) => {
+  const { lg, md } = Grid.useBreakpoint();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -76,7 +78,7 @@ const AppLayout = ({
         getItem('Dashboard', '/dashboard', <DashboardOutlined />),
         isAdmin ? getItem('Data Admin', '/data-admin', <UserOutlined />) : null,
         getItem('Mahasiswa', '/mahasiswa', <TeamOutlined />),
-        isAdmin ? getItem('Daftar Login', '/log', <RiseOutlined />) : null,
+        isAdmin ? getItem('Daftar Masuk', '/log', <RiseOutlined />) : null,
       ],
       'group'
     ),
@@ -98,7 +100,7 @@ const AppLayout = ({
       'Lainnya',
       'lainnya',
       <CalculatorOutlined />,
-      [getItem('Logout', 'logout', <LogoutOutlined />)],
+      [getItem('Keluar', 'logout', <LogoutOutlined />)],
       'group'
     ),
   ];
@@ -112,7 +114,7 @@ const AppLayout = ({
         getItem('Dashboard', '/dashboard', <DashboardOutlined />),
         getItem('Identifikasi', '/identifikasi', <BarChartOutlined />),
         getItem('Hasil Identifikasi', '/hasil', <HistoryOutlined />),
-        getItem('Logout', 'logout', <LogoutOutlined />),
+        getItem('Keluar', 'logout', <LogoutOutlined />),
       ],
       'group'
     ),
@@ -125,48 +127,114 @@ const AppLayout = ({
     }
     navigate(`${key}`);
   };
+
+  const itemsMenuMobile: MenuProps['items'] = [
+    {
+      key: '1',
+      type: 'group',
+      label: 'Admin Area',
+      children: [
+        getItem('Dashboard', '/dashboard', <DashboardOutlined />),
+        isAdmin ? getItem('Data Admin', '/data-admin', <UserOutlined />) : null,
+        getItem('Mahasiswa', '/mahasiswa', <TeamOutlined />),
+        isAdmin ? getItem('Daftar Masuk', '/log', <RiseOutlined />) : null,
+      ],
+    },
+    {
+      key: '2',
+      type: 'group',
+      label: 'SPK Area',
+      children: [
+        getItem('Kategori', '/kategori', <ClusterOutlined />),
+        getItem('Kriteria', '/kriteria', <ApartmentOutlined />),
+        getItem('Rule', '/rules', <BorderBottomOutlined />),
+        getItem('Identifikasi', '/identifikasi', <BarChartOutlined />),
+        getItem('Hasil Identifikasi', '/hasil', <HistoryOutlined />),
+      ],
+    },
+    {
+      key: '3',
+      type: 'group',
+      label: 'Lainnya',
+      children: [getItem('Keluar', 'logout', <LogoutOutlined />)],
+    },
+  ];
+
+  const itemsMenuMhsMobile: MenuProps['items'] = [
+    {
+      key: '1',
+      type: 'group',
+      label: 'Menu',
+      children: [
+        getItem('Dashboard', '/dashboard', <DashboardOutlined />),
+        getItem('Identifikasi', '/identifikasi', <BarChartOutlined />),
+        getItem('Hasil Identifikasi', '/hasil', <HistoryOutlined />),
+        getItem('Keluar', 'logout', <LogoutOutlined />),
+      ],
+    },
+  ];
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <SiderCustom
-        theme="light"
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        // style={{
-        //   overflow: 'auto',
-        //   height: '100vh',
-        //   position: 'fixed',
-        //   left: 0,
-        //   top: 0,
-        //   bottom: 0,
-        // }}
-        // trigger={null}
-      >
-        <SiderHeader>
-          <img src={Logo} alt="logo" />
-        </SiderHeader>
-        <Divider style={{ margin: '16px 0px' }} />
-        <Menu
+      {md ? (
+        <SiderCustom
           theme="light"
-          defaultSelectedKeys={[location?.pathname]}
-          mode="inline"
-          items={isAdmin || isSuperAdmin ? items : itemsMhs}
-          onClick={handleClickMenu}
-        />
-      </SiderCustom>
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+          // style={{
+          //   overflow: 'auto',
+          //   height: '100vh',
+          //   position: 'fixed',
+          //   left: 0,
+          //   top: 0,
+          //   bottom: 0,
+          // }}
+          // trigger={null}
+        >
+          <SiderHeader>
+            <img src={Logo} alt="logo" />
+          </SiderHeader>
+          <Divider style={{ margin: '16px 0px' }} />
+          <Menu
+            theme="light"
+            defaultSelectedKeys={[location?.pathname]}
+            mode="inline"
+            items={isAdmin || isSuperAdmin ? items : itemsMhs}
+            onClick={handleClickMenu}
+          />
+        </SiderCustom>
+      ) : null}
+
       {/* <Layout style={{ marginLeft: !collapsed ? 200 : 80 }}> */}
       <Layout>
         <Header>
           <div className="header-menu">
             <div className="left">
-              {location.pathname !== '/dashboard' && (
-                <Button
-                  type="ghost"
-                  icon={<ArrowLeftOutlined />}
-                  onClick={() => navigate(-1)}
-                  style={{ marginRight: 8 }}
-                />
-              )}
+              <Row>
+                {md ? null : (
+                  <Dropdown
+                    menu={{
+                      items:
+                        isAdmin || isSuperAdmin
+                          ? itemsMenuMobile
+                          : itemsMenuMhsMobile,
+                      onClick: handleClickMenu,
+                    }}
+                  >
+                    <Button type="primary" icon={<MenuOutlined />}></Button>
+                  </Dropdown>
+                )}
+
+                {lg && location.pathname !== '/dashboard' && (
+                  <Button
+                    type="ghost"
+                    icon={<ArrowLeftOutlined />}
+                    onClick={() => navigate(-1)}
+                    style={{ marginRight: 8 }}
+                  />
+                )}
+              </Row>
 
               <h2>{title || 'Dashboard'}</h2>
             </div>

@@ -13,24 +13,36 @@ export const FormContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.primary};
-  width: 50%;
+  width: 100%;
+
+  @media only screen and (min-width: 992px) {
+    width: 50%;
+  }
 `;
 
 export const ImageContainer = styled.div`
-  display: flex;
   justify-content: center;
   align-items: center;
   width: 50%;
+  display: none;
 
   img {
     width: 500px;
     height: 400px;
     object-fit: cover;
+    display: none;
+  }
+
+  @media only screen and (min-width: 992px) {
+    display: flex;
+    img {
+      display: block;
+    }
   }
 `;
 
 export const FormWrapper = styled(Form)`
-  width: 60%;
+  width: 80%;
   padding: 24px;
   background-color: white;
   box-shadow: ${(props) => props.theme.shadow};
@@ -50,6 +62,10 @@ export const FormWrapper = styled(Form)`
     margin-bottom: 8px !important;
 
     text-align: center;
+  }
+
+  @media only screen and (min-width: 992px) {
+    width: 60%;
   }
 `;
 

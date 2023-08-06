@@ -48,6 +48,19 @@ const Users = () => {
 
   const columns = [
     {
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      render: (no: number) => <div>{no}</div>,
+    },
+    {
+      title: 'Tanggal dibuat',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+
+      render: (date: any) => <>{moment.utc(date).format('DD MMM YYYY')}</>,
+    },
+    {
       title: 'Nama',
       dataIndex: 'fullname',
       key: 'fullname',
@@ -56,6 +69,7 @@ const Users = () => {
       title: 'Nama Pengguna',
       dataIndex: 'username',
       key: 'username',
+
       render: (text: string, record: IUser) => <>{record?.username}</>,
     },
     // {
@@ -79,15 +93,7 @@ const Users = () => {
     //   ),
     // },
     {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (date: any) => (
-        <>{moment(date).format('DD MMM YYYY, HH:MM:ss')}</>
-      ),
-    },
-    {
-      title: 'Action',
+      title: 'Aksi',
       dataIndex: 'action',
       key: 'action',
 
@@ -146,7 +152,12 @@ const Users = () => {
     setIsLoading(true);
     try {
       const res = await axios.get('/users?role=admin');
-      setListUsers(res.data);
+      setListUsers(
+        res.data.map((item: any, idx: number) => ({
+          no: idx + 1,
+          ...item,
+        }))
+      );
     } catch (error: any) {
       message.error('Something went wrong!');
       console.log(error);
@@ -256,10 +267,13 @@ const Users = () => {
           Tambah Admin
         </Button>
       </div>
+
       <Table
         dataSource={transformData()}
         columns={columns}
         loading={isLoading}
+        pagination={false}
+        scroll={{ x: true }}
       />
       {/* Tambah */}
       <Modal

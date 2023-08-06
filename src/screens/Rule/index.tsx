@@ -17,6 +17,7 @@ import { IGejala } from '../Gejala';
 import { IKategori } from '../Kategori';
 import { useGlobalContext } from '../../context/GlobalContext';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 // interface IRule {
 //   id_problem: any;
@@ -57,13 +58,21 @@ const RuleDO = () => {
 
   let columns = [];
 
-  columns.push({
-    title: 'Kriteria',
-    dataIndex: 'evidence',
-    key: 'evidence',
-    // width: '25%',
-    render: (_: any, record: any) => <>{record.evidence.name}</>,
-  });
+  columns.push(
+    {
+      title: 'No',
+      dataIndex: 'no',
+      key: 'no',
+      render: (no: number) => <div>{no}</div>,
+    },
+    {
+      title: 'Kriteria',
+      dataIndex: 'evidence',
+      key: 'evidence',
+      // width: '25%',
+      render: (_: any, record: any) => <>{record.evidence.name}</>,
+    }
+  );
 
   listKategori.forEach((item) => {
     columns.push({
@@ -73,7 +82,9 @@ const RuleDO = () => {
       // width: '25%',
       render: (_: any, record: any) => (
         <>
-          {record.problems.some((problem) => problem.code === item.code) ? (
+          {record.problems.some(
+            (problem: any) => problem.code === item.code
+          ) ? (
             <Button type="primary" icon={<CheckOutlined />} />
           ) : null}
         </>
@@ -89,7 +100,7 @@ const RuleDO = () => {
       // width: '25%',
     },
     {
-      title: 'Action',
+      title: 'Aksi',
       dataIndex: 'action',
       key: 'action',
       // width: '25%',
@@ -107,13 +118,15 @@ const RuleDO = () => {
                 setDataRule({
                   _id: record._id,
                   id_evidence: record?.evidence?._id,
-                  id_problem: record?.problems?.map((problem) => problem?._id),
+                  id_problem: record?.problems?.map(
+                    (problem: any) => problem?._id
+                  ),
                   cf: record?.cf,
                 });
                 form.setFieldValue('gejala', record?.evidence?._id);
                 form.setFieldValue(
                   'kategori',
-                  record?.problems.map((problem) => problem?._id)
+                  record?.problems.map((problem: any) => problem?._id)
                 );
                 form.setFieldValue('cf', record?.cf);
               }}
@@ -168,7 +181,12 @@ const RuleDO = () => {
     setIsLoading(true);
     try {
       const res = await axios.get('/rules');
-      setListRule(res.data);
+      setListRule(
+        res.data.map((item: any, idx: number) => ({
+          no: idx + 1,
+          ...item,
+        }))
+      );
     } catch (error: any) {
       message.error('Something went wrong!');
       console.log(error);
@@ -262,7 +280,12 @@ const RuleDO = () => {
           Tambah Rule
         </Button>
       </div>
-      <Table dataSource={listRule} columns={columns} loading={isLoading} />
+      <Table
+        dataSource={listRule}
+        columns={columns}
+        loading={isLoading}
+        scroll={{ x: 250 }}
+      />
       {/* Tambah */}
       <Modal
         title={isEdit ? 'Edit Rule' : 'Tambah Rule'}

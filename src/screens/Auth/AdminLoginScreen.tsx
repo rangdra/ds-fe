@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Grid, Input } from 'antd';
 import IllustLogin from '../../assets/illust-admin.png';
 import GoogleIcon from '../../assets/google-icon.png';
 import { useGlobalContext } from '../../context/GlobalContext';
@@ -6,18 +6,16 @@ import Logo from '../../assets/logo-pranata.png';
 
 import {
   AuthContainer,
-  ButtonGoogle,
   ButtonSubmit,
   FormContainer,
   FormWrapper,
   ImageContainer,
-  TextLink,
-  TextQuestion,
 } from './styles';
-import { useLocation } from 'react-router-dom';
 
 export default function AdminLoginScreen() {
-  const { login, loading, loginWithGoogle } = useGlobalContext();
+  const { lg } = Grid.useBreakpoint();
+
+  const { login, loading } = useGlobalContext();
   const onFinish = (values: any) => {
     login(values);
   };
@@ -31,6 +29,7 @@ export default function AdminLoginScreen() {
           autoComplete="off"
           layout="vertical"
         >
+          {' '}
           <div className="flex justify-center">
             <img src={Logo} alt="logo" className="h-[90px] w-[90px] mb-4" />
           </div>
@@ -47,7 +46,6 @@ export default function AdminLoginScreen() {
           >
             <Input size="large" />
           </Form.Item> */}
-
           <Form.Item
             label="Nama Pengguna"
             name="username"
@@ -60,7 +58,6 @@ export default function AdminLoginScreen() {
           >
             <Input size="large" />
           </Form.Item>
-
           <Form.Item
             label="Password"
             name="password"
@@ -70,7 +67,6 @@ export default function AdminLoginScreen() {
           >
             <Input.Password size="large" />
           </Form.Item>
-
           <Form.Item style={{ marginBottom: 8 }}>
             <ButtonSubmit
               type="primary"
