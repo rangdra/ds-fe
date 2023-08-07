@@ -290,7 +290,7 @@ const MahasiswaDO = () => {
         />
 
         <ExportToExcel apiData={list} fileName="mahasiswa" />
-        <Button
+        {/* <Button
           icon={<DeleteFilled />}
           type="primary"
           danger
@@ -298,7 +298,7 @@ const MahasiswaDO = () => {
           onClick={() => setIsModalVisible(true)}
         >
           Tmbh
-        </Button>
+        </Button> */}
       </div>
 
       <Table
