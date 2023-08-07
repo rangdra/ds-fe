@@ -312,6 +312,7 @@ const RuleDO = () => {
           >
             <Select
               allowClear
+              dropdownClassName="custom-dropdown"
               placeholder="Pilih kriteria!"
               onChange={(value) =>
                 setDataRule({ ...dataRule, id_evidence: value })

@@ -4,6 +4,7 @@ import {
   Card,
   Checkbox,
   Col,
+  Collapse,
   Divider,
   Form,
   Input,
@@ -37,6 +38,7 @@ import { HasilIdentifikasi } from './HasilIdentifikasi';
 import LoadingComp from './LoadingComp';
 import { removeDuplicateData, sortRules } from '../helpers';
 import { IRule } from '../screens/Rule';
+import { IGejala } from '../screens/Gejala';
 
 interface IMahasiswa {
   name: string;
@@ -372,17 +374,11 @@ const Identifikasi: React.FC = () => {
                   </CustomCard>
                 </Col>
                 <Col span={24}>
-                  <CustomCard
+                  {/* <CustomCard
                     title="Berdasarkan kriteria yang dipilih ada beberapa rekomendasi yang bisa dilakukan : "
                     headStyle={{ background: theme.primary }}
                   >
-                    {/* {hasil?.problem.map((item: IGejala) => (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: item?.description || '',
-                        }}
-                      />
-                    ))} */}
+                  
 
                     {rekomendasi?.map((item: IRule) => (
                       <Row style={{ gap: 8 }}>
@@ -394,7 +390,23 @@ const Identifikasi: React.FC = () => {
                         </Typography.Text>
                       </Row>
                     ))}
-                  </CustomCard>
+                  </CustomCard> */}
+                  <h2 className="text-xl font-[600] mb-4 text-gray-800">
+                    Berdasarkan kriteria yang dipilih ada beberapa rekomendasi
+                    yang bisa dilakukan :
+                  </h2>
+                  <CustomCollapse accordion expandIconPosition="end">
+                    {rekomendasi?.map((item: any) => (
+                      <Collapse.Panel
+                        header={item?.evidence.name}
+                        key={item?.evidence.code}
+                      >
+                        <p className="md:text-base text-sm font-medium text-gray-800">
+                          {item.evidence.description}
+                        </p>
+                      </Collapse.Panel>
+                    ))}
+                  </CustomCollapse>
                 </Col>
               </Row>
             </>
@@ -442,6 +454,49 @@ const Identifikasi: React.FC = () => {
 };
 
 export default Identifikasi;
+
+const CustomCollapse = styled(Collapse)`
+  .ant-collapse {
+    background-color: transparent;
+  }
+  .ant-collapse-borderless > .ant-collapse-item {
+    border: 1px solid #e5e9ec;
+  }
+
+  .ant-collapse-item {
+    padding: 20px;
+    margin-bottom: 0;
+
+    &.ant-collapse-item-active {
+      background-color: #f4f6f9;
+      border-color: #f4f6f9;
+      .ant-collapse-header {
+        color: ${theme.primary};
+      }
+    }
+
+    .ant-collapse-header {
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e1e1e;
+    }
+    .ant-collapse-content {
+      background: transparent !important;
+      border: none;
+    }
+    .ant-collapse-content-box {
+      padding: 0;
+      margin-top: 16px;
+
+      .ant-typography {
+        font-size: 14px;
+        font-weight: 400;
+        color: #3f4c5f;
+      }
+    }
+  }
+`;
 
 const CustomDivider = styled(Divider)`
   .ant-divider-inner-text {

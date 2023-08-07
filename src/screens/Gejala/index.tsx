@@ -297,7 +297,7 @@ export default function Gejala() {
             />
           </Form.Item>
           <Form.Item label="Rekomendasi terhadap kriteria" name="description">
-            {/* <ReactQuill
+            <ReactQuill
               theme="snow"
               value={dataGejala.description}
               onChange={(val) =>
@@ -309,8 +309,8 @@ export default function Gejala() {
               modules={quillModules}
               formats={quillFormats}
             />
-             */}
-            <Select
+
+            {/* <Select
               dropdownClassName="custom-dropdown"
               options={dataRekomendasi.map((item) => ({
                 value: item.label,
@@ -318,7 +318,7 @@ export default function Gejala() {
               }))}
               onChange={(e) => setDataGejala({ ...dataGejala, description: e })}
               value={dataGejala.description}
-            />
+            /> */}
           </Form.Item>
         </Form>
       </Modal>

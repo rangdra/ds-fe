@@ -86,7 +86,10 @@ const History = () => {
       render: (_: any, record: any) => (
         <div>
           {record?.problem.length > 0
-            ? record?.problem?.map((x: { name: string }) => x.name)
+            ? record?.problem?.map(
+                (x: { name: string }, idx: number) =>
+                  `${x.name}${record?.problem.length - 1 !== idx ? ', ' : ''}`
+              )
             : '-'}
         </div>
       ),
