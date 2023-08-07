@@ -6,12 +6,13 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import axios from '../configs/axios';
-import { Card, Col, Row, Table, Typography } from 'antd';
+import { Card, Col, Collapse, Row, Table, Typography } from 'antd';
 import moment from 'moment';
 import styled from 'styled-components';
 import { IGejala } from '../screens/Gejala';
 import theme from '../theme';
 import Logo from '../assets/logo-pranata.png';
+import AntdIcon from '@ant-design/icons';
 
 import React from 'react';
 
@@ -74,24 +75,44 @@ export const HasilIdentifikasi = React.forwardRef(
               </CustomCard>
             </Col>
             <Col span={24}>
-              <CustomCard
+              {/* <CustomCard
                 title="Berdasarkan kriteria yang dipilih ada beberapa rekomendasi yang bisa dilakukan : "
                 headStyle={{ background: theme.primary }}
               >
-                {/* {detail?.problem.map((item: IGejala) => (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: item?.description || '',
-                    }}
-                  />
-                ))} */}
                 {detail?.evidences.map((item: IGejala) => (
                   <Row>
                     <Typography.Text strong>{item.name}: </Typography.Text>
                     <Typography.Text>{item.description}</Typography.Text>
                   </Row>
                 ))}
-              </CustomCard>
+              </CustomCard> */}
+              <CustomCollapse
+                accordion
+                expandIconPosition="end"
+                // expandIcon={({ isActive }) =>
+                //   isActive ? (
+                //     <AntdIcon
+                //       component={IconChevron}
+                //       style={{ transition: 'all .2s' }}
+                //     />
+                //   ) : (
+                //     <AntdIcon
+                //       component={IconChevron}
+                //       style={{
+                //         transform: 'rotate(180deg)',
+                //         transition: 'all .2s',
+                //       }}
+                //     />
+                //   )
+                // }
+              >
+                {detail?.evidences.map((item: IGejala) => (
+                  <Collapse.Panel header={item.name} key={item.code}>
+                    <Typography.Text>{item.description}</Typography.Text>
+                  </Collapse.Panel>
+                ))}
+                {/* </CustomCard>  */}
+              </CustomCollapse>
             </Col>
           </Row>
         </div>
@@ -107,5 +128,48 @@ const CustomCard = styled(Card)`
 
   .ant-card-body {
     border: 1px solid ${theme.primary};
+  }
+`;
+
+const CustomCollapse = styled(Collapse)`
+  .ant-collapse {
+    background-color: transparent;
+  }
+  .ant-collapse-borderless > .ant-collapse-item {
+    border: 1px solid #e5e9ec;
+  }
+
+  .ant-collapse-item {
+    padding: 20px 16px 20px 28px;
+    margin-bottom: 0;
+
+    &.ant-collapse-item-active {
+      background-color: #f4f6f9;
+      border-color: #f4f6f9;
+      .ant-collapse-header {
+        color: ${theme.primary};
+      }
+    }
+
+    .ant-collapse-header {
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e1e1e;
+    }
+    .ant-collapse-content {
+      background: transparent !important;
+      border: none;
+    }
+    .ant-collapse-content-box {
+      padding: 0;
+      margin-top: 16px;
+
+      .ant-typography {
+        font-size: 14px;
+        font-weight: 400;
+        color: #3f4c5f;
+      }
+    }
   }
 `;

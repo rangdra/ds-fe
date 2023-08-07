@@ -1,4 +1,13 @@
-import { Button, Card, Col, Row, Table, Typography, message } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Row,
+  Table,
+  Typography,
+  message,
+} from 'antd';
 import axios from '../../configs/axios';
 import React, { useEffect, useRef, useState } from 'react';
 import AppLayout from '../../components/AppLayout';
@@ -109,24 +118,20 @@ export default function Detail() {
               </CustomCard>
             </Col>
             <Col span={24}>
-              <CustomCard
-                title="Berdasarkan kriteria yang dipilih ada beberapa rekomendasi yang bisa dilakukan : "
-                headStyle={{ background: theme.primary }}
-              >
-                {/* {detail?.problem.map((item: IGejala) => (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: item?.description || '',
-                    }}
-                  />
-                ))} */}
+              <h2 className="text-lg font-[600] mb-4 text-gray-800">
+                Berdasarkan kriteria yang dipilih ada beberapa rekomendasi yang
+                bisa dilakukan :
+              </h2>
+              <CustomCollapse accordion expandIconPosition="end">
                 {detail?.evidences.map((item: IGejala) => (
-                  <Row style={{ gap: 8 }}>
-                    <Typography.Text strong>{item.name}: </Typography.Text>
-                    <Typography.Text>{item.description}</Typography.Text>
-                  </Row>
+                  <Collapse.Panel header={item.name} key={item.code}>
+                    <p className="md:text-base text-sm font-medium text-gray-800">
+                      {item.description}
+                    </p>
+                  </Collapse.Panel>
                 ))}
-              </CustomCard>
+                {/* </CustomCard>  */}
+              </CustomCollapse>
             </Col>
           </Row>
           <div style={{ display: 'none' }}>
@@ -145,5 +150,48 @@ const CustomCard = styled(Card)`
 
   .ant-card-body {
     border: 1px solid ${theme.primary};
+  }
+`;
+
+const CustomCollapse = styled(Collapse)`
+  .ant-collapse {
+    background-color: transparent;
+  }
+  .ant-collapse-borderless > .ant-collapse-item {
+    border: 1px solid #e5e9ec;
+  }
+
+  .ant-collapse-item {
+    padding: 20px 16px 20px 28px;
+    margin-bottom: 0;
+
+    &.ant-collapse-item-active {
+      background-color: #f4f6f9;
+      border-color: #f4f6f9;
+      .ant-collapse-header {
+        color: ${theme.primary};
+      }
+    }
+
+    .ant-collapse-header {
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e1e1e;
+    }
+    .ant-collapse-content {
+      background: transparent !important;
+      border: none;
+    }
+    .ant-collapse-content-box {
+      padding: 0;
+      margin-top: 16px;
+
+      .ant-typography {
+        font-size: 14px;
+        font-weight: 400;
+        color: #3f4c5f;
+      }
+    }
   }
 `;

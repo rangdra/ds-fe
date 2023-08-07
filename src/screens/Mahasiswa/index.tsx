@@ -72,7 +72,11 @@ const MahasiswaDO = () => {
       render: (text: string, record: any) => (
         <Link
           style={{ color: theme.gray800, textDecoration: 'underline' }}
-          to={`/hasil/${record?.lastIdentification?._id}`}
+          to={
+            record?.lastIdentification?._id
+              ? `/hasil/${record?.lastIdentification?._id}`
+              : '#'
+          }
         >
           {text}
         </Link>
@@ -286,6 +290,15 @@ const MahasiswaDO = () => {
         />
 
         <ExportToExcel apiData={list} fileName="mahasiswa" />
+        <Button
+          icon={<DeleteFilled />}
+          type="primary"
+          danger
+          ghost
+          onClick={() => setIsModalVisible(true)}
+        >
+          Tmbh
+        </Button>
       </div>
 
       <Table
