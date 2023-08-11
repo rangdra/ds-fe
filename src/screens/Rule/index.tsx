@@ -94,7 +94,7 @@ const RuleDO = () => {
 
   columns.push(
     {
-      title: 'Belief',
+      title: 'Bobot',
       dataIndex: 'cf',
       key: 'cf',
       // width: '25%',
@@ -285,6 +285,7 @@ const RuleDO = () => {
         columns={columns}
         loading={isLoading}
         scroll={{ x: 250 }}
+        pagination={false}
       />
       {/* Tambah */}
       <Modal

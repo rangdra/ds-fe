@@ -173,8 +173,8 @@ const Dashboard: React.FC = () => {
                     <ApartmentOutlined />
                   </IconWrapper>
                   <div className="title">
-                    <h4>Total Gejala </h4>
-                    <p>{totalData.gejala} Gejala </p>
+                    <h4>Total Kriteria</h4>
+                    <p>{totalData.gejala} Kriteria</p>
                   </div>
                 </div>
                 <div className="right">

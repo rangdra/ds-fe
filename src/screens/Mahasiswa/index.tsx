@@ -108,8 +108,9 @@ const MahasiswaDO = () => {
         <ValueSet value={record?.mahasiswa?.jenjang} />
       ),
     },
+
     {
-      title: 'Potensi Drop Out',
+      title: 'Potensi',
       dataIndex: 'potensi',
       key: 'potensi',
       render: (text: string, record: any) => (
@@ -266,7 +267,10 @@ const MahasiswaDO = () => {
     NIM: mhs.mahasiswa.nim,
     Jurusan: mhs.mahasiswa.jurusan,
     Jenjang: mhs.mahasiswa.jenjang,
-    'Potensi Drop Out': (mhs as any).lastIdentification.problem
+    'Kegagalan (%)': (mhs as any).lastIdentification.problem
+      ? (mhs as any).lastIdentification?.percentage.toString()
+      : '-',
+    Potensi: (mhs as any).lastIdentification.problem
       ? (mhs as any).lastIdentification.problem[0].name
       : '-',
   }));
@@ -289,7 +293,7 @@ const MahasiswaDO = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <ExportToExcel apiData={list} fileName="mahasiswa" />
+        <ExportToExcel apiData={list} fileName="Laporan Hasil" />
         {/* <Button
           icon={<DeleteFilled />}
           type="primary"

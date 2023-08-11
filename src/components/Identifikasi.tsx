@@ -401,9 +401,12 @@ const Identifikasi: React.FC = () => {
                         header={item?.evidence.name}
                         key={item?.evidence.code}
                       >
-                        <p className="md:text-base text-sm font-medium text-gray-800">
-                          {item.evidence.description}
-                        </p>
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: item.evidence.description,
+                          }}
+                          className="md:text-sm text-sm font-medium text-gray-800"
+                        ></p>
                       </Collapse.Panel>
                     ))}
                   </CustomCollapse>

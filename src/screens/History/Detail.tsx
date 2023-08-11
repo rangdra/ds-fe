@@ -125,9 +125,12 @@ export default function Detail() {
               <CustomCollapse accordion expandIconPosition="end">
                 {detail?.evidences.map((item: IGejala) => (
                   <Collapse.Panel header={item.name} key={item.code}>
-                    <p className="md:text-base text-sm font-medium text-gray-800">
-                      {item.description}
-                    </p>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: item.description ?? '',
+                      }}
+                      className="md:text-sm text-sm font-medium text-gray-800"
+                    ></p>
                   </Collapse.Panel>
                 ))}
                 {/* </CustomCard>  */}

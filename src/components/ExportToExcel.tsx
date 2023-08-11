@@ -23,6 +23,7 @@ export const ExportToExcel = ({
       { wch: 15 }, // Column B width
       { wch: 20 }, // Column C width
       { wch: 10 }, // Column D width
+      { wch: 15 },
       { wch: 20 },
     ];
 

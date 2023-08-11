@@ -108,7 +108,12 @@ export const HasilIdentifikasi = React.forwardRef(
               >
                 {detail?.evidences.map((item: IGejala) => (
                   <Collapse.Panel header={item.name} key={item.code}>
-                    <Typography.Text>{item.description}</Typography.Text>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: item.description ?? '',
+                      }}
+                      className="md:text-sm text-sm font-medium text-gray-800"
+                    ></p>
                   </Collapse.Panel>
                 ))}
                 {/* </CustomCard>  */}

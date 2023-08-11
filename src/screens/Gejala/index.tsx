@@ -245,6 +245,7 @@ export default function Gejala() {
         columns={columns}
         loading={isLoading}
         scroll={{ x: 250 }}
+        pagination={false}
       />
       {/* Tambah */}
       <Modal
