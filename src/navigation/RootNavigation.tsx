@@ -1,31 +1,28 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { GlobalProvider } from '../context/GlobalContext';
-import LoginScreen from '../screens/Auth/LoginScreen';
-import RegisterScreen from '../screens/Auth/RegisterScreen';
-import PrivateRoute from './PrivateRoute';
-import Gejala from '../screens/Gejala';
-import KategoriDO from '../screens/Kategori';
-import RuleDO from '../screens/Rule';
-import Pertanyaan from '../screens/Pertanyaan';
-import Identifikasi from '../screens/Identifikasi';
-import History from '../screens/History';
-import DetailHistory from '../screens/History/Detail';
-import MahasiswaDO from '../screens/Mahasiswa';
-import Dashboard from '../screens/Dashboard';
-import Users from '../screens/Users';
-import LoginLog from '../screens/LoginLog';
-import ChangePassword from '../screens/Auth/ChangePassword';
-import AdminLoginScreen from '../screens/Auth/AdminLoginScreen';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { GlobalProvider } from "../context/GlobalContext";
+import LoginScreen from "../screens/Auth/LoginScreen";
+import PrivateRoute from "./PrivateRoute";
+import Gejala from "../screens/Gejala";
+import KategoriDO from "../screens/Kategori";
+import RuleDO from "../screens/Rule";
+import Pertanyaan from "../screens/Pertanyaan";
+import Identifikasi from "../screens/Identifikasi";
+import History from "../screens/History";
+import DetailHistory from "../screens/History/Detail";
+import MahasiswaDO from "../screens/Mahasiswa";
+import Dashboard from "../screens/Dashboard";
+import Users from "../screens/Users";
+import LoginLog from "../screens/LoginLog";
+import ChangePassword from "../screens/Auth/ChangePassword";
+import AdminLoginScreen from "../screens/Auth/AdminLoginScreen";
 
 export default function RootNavigation() {
   return (
     <BrowserRouter>
       <GlobalProvider>
         <Routes>
-          {/* <Route path="/" element={<HomeScreen />} /> */}
           <Route path="/" element={<LoginScreen />} />
           <Route path="/admin-do" element={<AdminLoginScreen />} />
-
           <Route
             path="/dashboard"
             element={
@@ -34,14 +31,6 @@ export default function RootNavigation() {
               </PrivateRoute>
             }
           />
-          {/* <Route
-            path="/keputusan/:id"
-            element={
-              <PrivateRoute>
-                <Keputusan />
-              </PrivateRoute>
-            }
-          /> */}
           <Route
             path="/kriteria"
             element={
@@ -82,7 +71,6 @@ export default function RootNavigation() {
               </PrivateRoute>
             }
           />
-          {/* <Route path="/identifikasi" element={<IdentifikasiHome />} /> */}
           <Route
             path="/hasil"
             element={
@@ -131,7 +119,6 @@ export default function RootNavigation() {
               </PrivateRoute>
             }
           />
-          {/* <Route path="/register" element={<RegisterScreen />} /> */}
           <Route path="*" element={<p>Not found</p>} />
         </Routes>
       </GlobalProvider>

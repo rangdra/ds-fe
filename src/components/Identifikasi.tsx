@@ -2,43 +2,30 @@ import {
   Alert,
   Button,
   Card,
-  Checkbox,
   Col,
   Collapse,
   Divider,
   Form,
-  Input,
-  Modal,
   Radio,
   Row,
   Select,
   Space,
-  Spin,
   Steps,
   Table,
-  Typography,
   message,
-} from 'antd';
-import {
-  SolutionOutlined,
-  DotChartOutlined,
-  PrinterOutlined,
-  RedoOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import ReactToPrint from 'react-to-print';
-import { useEffect, useRef, useState } from 'react';
-import axios from '../configs/axios';
-import styled from 'styled-components';
-import { useGlobalContext } from '../context/GlobalContext';
-import theme from '../theme';
-import moment from 'moment';
-import { IUser } from '../types';
-import { HasilIdentifikasi } from './HasilIdentifikasi';
-import LoadingComp from './LoadingComp';
-import { removeDuplicateData, sortRules } from '../helpers';
-import { IRule } from '../screens/Rule';
-import { IGejala } from '../screens/Gejala';
+} from "antd";
+import { SolutionOutlined, DotChartOutlined, PrinterOutlined, RedoOutlined, UserOutlined } from "@ant-design/icons";
+import ReactToPrint from "react-to-print";
+import { useEffect, useRef, useState } from "react";
+import axios from "../configs/axios";
+import styled from "styled-components";
+import { useGlobalContext } from "../context/GlobalContext";
+import theme from "../theme";
+import moment from "moment";
+import { IUser } from "../types";
+import { HasilIdentifikasi } from "./HasilIdentifikasi";
+import LoadingComp from "./LoadingComp";
+import { removeDuplicateData, sortRules } from "../helpers";
 
 interface IMahasiswa {
   name: string;
@@ -47,13 +34,6 @@ interface IMahasiswa {
   jenjang: string;
   _id?: string;
 }
-
-const initialMahasiswa = {
-  name: '',
-  nim: '',
-  jurusan: '',
-  jenjang: '',
-};
 
 const Identifikasi: React.FC = () => {
   const { isMhs, currentUser } = useGlobalContext();
@@ -70,56 +50,33 @@ const Identifikasi: React.FC = () => {
   const getMahasiswa = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get('/mahasiswa');
+      const res = await axios.get("/mahasiswa");
       setListMahasiswa(res.data);
     } catch (error: any) {
-      message.error('Something went wrong!');
+      message.error("Something went wrong!");
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
-
-  // const getPertanyaan = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await axios.get('/pertanyaan');
-  //     setListPertanyaan(res?.data);
-  //   } catch (error: any) {
-  //     message.error('Something went wrong!');
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const getRules = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get('/rules');
+      const res = await axios.get("/rules");
       setListRule(res?.data);
     } catch (error: any) {
-      message.error('Something went wrong!');
+      message.error("Something went wrong!");
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  console.log(listRule);
-
   useEffect(() => {
     getMahasiswa();
-    // getGejala();
     getRules();
-    // getPertanyaan();
   }, []);
-
-  // useEffect(() => {
-  //   if (isMhs) {
-  //     form.setFieldValue('mahasiswa', currentUser?._id);
-  //   }
-  // }, [isMhs, currentUser?._id]);
 
   const handleNext = async () => {
     try {
@@ -136,13 +93,8 @@ const Identifikasi: React.FC = () => {
   };
 
   const hitungDempsterShafer = async () => {
-    // console.log(form.getFieldsValue());
-    const keyEv = Object.keys(form.getFieldsValue()).filter(
-      (item) => item !== 'mahasiswa'
-    );
-    const arrEvId = keyEv
-      .map((key) => form.getFieldsValue()[key])
-      .filter((item) => item);
+    const keyEv = Object.keys(form.getFieldsValue()).filter((item) => item !== "mahasiswa");
+    const arrEvId = keyEv.map((key) => form.getFieldsValue()[key]).filter((item) => item);
 
     console.log({
       evidences: arrEvId,
@@ -153,16 +105,16 @@ const Identifikasi: React.FC = () => {
     try {
       const mhsId = isMhs ? currentUser?._id : form.getFieldsValue().mahasiswa;
       if (arrEvId.length === 0) {
-        message.error('Silahkan pilih kriteria terlebih dahulu!');
+        message.error("Silahkan pilih kriteria terlebih dahulu!");
         return;
       }
 
       if (!mhsId) {
-        message.error('Silahkan pilih mahasiswa!');
+        message.error("Silahkan pilih mahasiswa!");
         return;
       }
 
-      const res = await axios.post('/process', {
+      const res = await axios.post("/process", {
         evidences: arrEvId,
         mhsId,
       });
@@ -176,22 +128,18 @@ const Identifikasi: React.FC = () => {
       for (const item of rekomRules) {
         const arrKode = item.problems.map((x) => x.code);
 
-        if (arrKode.includes('KG3')) {
+        if (arrKode.includes("KG3")) {
           rulePotensiTinggi.push(item);
         }
-        if (arrKode.includes('KG2')) {
+        if (arrKode.includes("KG2")) {
           rulePotensiSedang.push(item);
         }
-        if (arrKode.includes('KG1')) {
+        if (arrKode.includes("KG1")) {
           rulePotensiRendah.push(item);
         }
       }
 
-      const resR = [
-        ...rulePotensiTinggi,
-        ...rulePotensiSedang,
-        ...rulePotensiRendah,
-      ];
+      const resR = [...rulePotensiTinggi, ...rulePotensiSedang, ...rulePotensiRendah];
 
       setRekomendasi(removeDuplicateData(resR));
 
@@ -199,7 +147,7 @@ const Identifikasi: React.FC = () => {
       setHasil(res.data);
       form.resetFields();
       if (isMhs) {
-        form.setFieldValue('mahasiswa', currentUser?._id);
+        form.setFieldValue("mahasiswa", currentUser?._id);
       }
     } catch (error: any) {
       console.log(error);
@@ -213,16 +161,16 @@ const Identifikasi: React.FC = () => {
 
   const columns = [
     {
-      title: 'Kode',
-      dataIndex: 'code',
-      key: 'code',
-      width: '20%',
+      title: "Kode",
+      dataIndex: "code",
+      key: "code",
+      width: "20%",
     },
     {
-      title: 'Kriteria Terpilih',
-      dataIndex: 'name',
-      key: 'name',
-      width: '80%',
+      title: "Kriteria Terpilih",
+      dataIndex: "name",
+      key: "name",
+      width: "80%",
     },
   ];
 
@@ -232,11 +180,11 @@ const Identifikasi: React.FC = () => {
     <>
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
           minHeight: 360,
-          width: '100%',
+          width: "100%",
           backgroundColor: theme.white,
           padding: 16,
           borderRadius: 8,
@@ -248,13 +196,13 @@ const Identifikasi: React.FC = () => {
               current={current}
               items={[
                 {
-                  title: 'Isi Kriteria yang dialami',
-                  status: 'finish',
+                  title: "Isi Kriteria yang dialami",
+                  status: "finish",
                   icon: <SolutionOutlined />,
                 },
                 {
-                  title: 'Hasil Identifikasi',
-                  status: 'finish',
+                  title: "Hasil Identifikasi",
+                  status: "finish",
                   icon: <DotChartOutlined />,
                 },
               ]}
@@ -266,13 +214,7 @@ const Identifikasi: React.FC = () => {
             <Row>
               {listRule.length > 1 && (
                 <Col span={24}>
-                  <Form
-                    style={{ marginTop: 24 }}
-                    name="basic"
-                    autoComplete="off"
-                    form={form}
-                    layout="vertical"
-                  >
+                  <Form style={{ marginTop: 24 }} name="basic" autoComplete="off" form={form} layout="vertical">
                     {!isMhs ? (
                       <Form.Item
                         label="Pilih Mahasiswa"
@@ -280,7 +222,7 @@ const Identifikasi: React.FC = () => {
                         rules={[
                           {
                             required: true,
-                            message: 'Silahkan pilih mahasiswa!',
+                            message: "Silahkan pilih mahasiswa!",
                           },
                         ]}
                         style={{ flex: 1 }}
@@ -291,24 +233,18 @@ const Identifikasi: React.FC = () => {
                           placeholder="Pilih mahasiswa"
                           options={listMahasiswa.map((mhs) => ({
                             value: mhs?._id,
-                            label: `${mhs?.fullname || '-'} / ${
-                              mhs?.mahasiswa?.nim || '-'
-                            } / ${mhs?.mahasiswa?.jenjang || '-'} / ${
-                              mhs?.mahasiswa?.jurusan || '-'
-                            }`,
+                            label: `${mhs?.fullname || "-"} / ${mhs?.mahasiswa?.nim || "-"} / ${
+                              mhs?.mahasiswa?.jenjang || "-"
+                            } / ${mhs?.mahasiswa?.jurusan || "-"}`,
                           }))}
                           showSearch
                           filterOption={(input, option) => {
-                            return (option!.label as unknown as string)
-                              .toLowerCase()
-                              .includes(input.toLowerCase());
+                            return (option!.label as unknown as string).toLowerCase().includes(input.toLowerCase());
                           }}
                         />
                       </Form.Item>
                     ) : (
-                      <h1 className="text-2xl font-bold mb-4">
-                        Isi kriteria berikut!{' '}
-                      </h1>
+                      <h1 className="text-2xl font-bold mb-4">Isi kriteria berikut! </h1>
                     )}
 
                     {listRule.map((list: any, index: number) => (
@@ -331,12 +267,12 @@ const Identifikasi: React.FC = () => {
                 <Alert
                   message={
                     isMhs
-                      ? 'Ooppss identifikasi belum tersedia untuk saat ini'
-                      : 'Untuk melakukan identifikasi harus memiliki minimal 2 pertanyaan, silahkan input pertanyaan terlebih dahulu'
+                      ? "Ooppss identifikasi belum tersedia untuk saat ini"
+                      : "Untuk melakukan identifikasi harus memiliki minimal 2 pertanyaan, silahkan input pertanyaan terlebih dahulu"
                   }
                   type="info"
                   showIcon
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                 />
               )}
             </Row>
@@ -345,62 +281,30 @@ const Identifikasi: React.FC = () => {
           {current === 1 && (
             <>
               <h1 className="text-2xl font-bold my-2">Hasil Identifikasi</h1>
-              <p className="text-red-500 text-sm">
-                Berikut hasil identifikasi mahasiswa
-              </p>
+              <p className="text-red-500 text-sm">Berikut hasil identifikasi mahasiswa</p>
               <div className="flex items-center gap-2 mb-2">
                 <UserOutlined />
                 <p className="mb-0">
-                  <span className="font-medium mr-2">
-                    {hasil?.mahasiswa?.name || hasil?.user?.fullname}
-                  </span>{' '}
-                  {moment(hasil?.createdAt).format('DD MMM YYYY, HH:MM:DD')}
+                  <span className="font-medium mr-2">{hasil?.mahasiswa?.name || hasil?.user?.fullname}</span>{" "}
+                  {moment(hasil?.createdAt).format("DD MMM YYYY, HH:MM:DD")}
                 </p>
               </div>
               <Row gutter={[24, 24]}>
                 <Col span={24}>
-                  <CustomTable
-                    dataSource={hasil?.evidences}
-                    columns={columns}
-                    pagination={false}
-                  />
+                  <CustomTable dataSource={hasil?.evidences} columns={columns} pagination={false} />
                 </Col>
                 <Col span={24}>
-                  <CustomCard
-                    title="Kesimpulan"
-                    headStyle={{ background: theme.primary }}
-                  >
+                  <CustomCard title="Kesimpulan" headStyle={{ background: theme.primary }}>
                     <div dangerouslySetInnerHTML={{ __html: hasil?.payload }} />
                   </CustomCard>
                 </Col>
                 <Col span={24}>
-                  {/* <CustomCard
-                    title="Berdasarkan kriteria yang dipilih ada beberapa rekomendasi yang bisa dilakukan : "
-                    headStyle={{ background: theme.primary }}
-                  >
-                  
-
-                    {rekomendasi?.map((item: IRule) => (
-                      <Row style={{ gap: 8 }}>
-                        <Typography.Text strong>
-                          {item?.evidence.name}:{' '}
-                        </Typography.Text>
-                        <Typography.Text>
-                          {item.evidence.description}
-                        </Typography.Text>
-                      </Row>
-                    ))}
-                  </CustomCard> */}
                   <h2 className="text-xl font-[600] mb-4 text-gray-800">
-                    Berdasarkan kriteria yang dipilih ada beberapa rekomendasi
-                    yang bisa dilakukan :
+                    Berdasarkan kriteria yang dipilih ada beberapa rekomendasi yang bisa dilakukan :
                   </h2>
                   <CustomCollapse accordion expandIconPosition="end">
                     {rekomendasi?.map((item: any) => (
-                      <Collapse.Panel
-                        header={item?.evidence.name}
-                        key={item?.evidence.code}
-                      >
+                      <Collapse.Panel header={item?.evidence.name} key={item?.evidence.code}>
                         <p
                           dangerouslySetInnerHTML={{
                             __html: item.evidence.description,
@@ -416,20 +320,14 @@ const Identifikasi: React.FC = () => {
           )}
         </div>
         {current === 0 && isShowContent && (
-          <Row style={{ justifyContent: 'end', marginTop: 24 }}>
-            <Button
-              style={{ width: 150 }}
-              type="primary"
-              onClick={handleNext}
-              loading={isLoading}
-              className="btn-bold"
-            >
+          <Row style={{ justifyContent: "end", marginTop: 24 }}>
+            <Button style={{ width: 150 }} type="primary" onClick={handleNext} loading={isLoading} className="btn-bold">
               Identifikasi
             </Button>
           </Row>
         )}
         {current === 1 && (
-          <Row style={{ justifyContent: 'center', marginTop: 24 }}>
+          <Row style={{ justifyContent: "center", marginTop: 24 }}>
             <Space>
               <Button type="primary" onClick={handleBack} className="btn-bold">
                 <RedoOutlined /> Identifikasi Lagi
@@ -448,7 +346,7 @@ const Identifikasi: React.FC = () => {
             </Space>
           </Row>
         )}
-        <div style={{ display: 'none' }}>
+        <div style={{ display: "none" }}>
           <HasilIdentifikasi detail={hasil} ref={componentRef} />
         </div>
       </div>
@@ -501,14 +399,6 @@ const CustomCollapse = styled(Collapse)`
   }
 `;
 
-const CustomDivider = styled(Divider)`
-  .ant-divider-inner-text {
-    font-weight: 600;
-    font-size: 24px;
-    color: #515255;
-  }
-`;
-
 const CustomCard = styled(Card)`
   .ant-card-head-title {
     color: #fff;
@@ -519,16 +409,4 @@ const CustomCard = styled(Card)`
   }
 `;
 
-const CustomTable = styled(Table)`
-  /* th {
-    background-color: ${theme.primary} !important;
-  }
-
-  th.ant-table-cell {
-    color: #fff !important;
-  } */
-  /* 
-  td.ant-table-cell {
-    border: 1px solid ${theme.primary} !important;
-  } */
-`;
+const CustomTable = styled(Table)``;

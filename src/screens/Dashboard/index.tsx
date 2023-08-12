@@ -1,4 +1,4 @@
-import { Button, Card, Col, Divider, Grid, Row, Typography } from 'antd';
+import { Button, Card, Col, Divider, Grid, Row, Typography } from "antd";
 import {
   RightOutlined,
   ClusterOutlined,
@@ -7,16 +7,16 @@ import {
   UserOutlined,
   BorderBottomOutlined,
   QuestionOutlined,
-} from '@ant-design/icons';
-import AppLayout from '../../components/AppLayout';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { IconWrapper, CustomCard } from './styles';
-import { useEffect, useState } from 'react';
-import axios from '../../configs/axios';
-import LoadingComp from '../../components/LoadingComp';
-import { useGlobalContext } from '../../context/GlobalContext';
-import ContentDashboard from '../../components/ContentDashboard';
-import styled from 'styled-components';
+} from "@ant-design/icons";
+import AppLayout from "../../components/AppLayout";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IconWrapper, CustomCard } from "./styles";
+import { useEffect, useState } from "react";
+import axios from "../../configs/axios";
+import LoadingComp from "../../components/LoadingComp";
+import { useGlobalContext } from "../../context/GlobalContext";
+import ContentDashboard from "../../components/ContentDashboard";
+import styled from "styled-components";
 
 const Dashboard: React.FC = () => {
   const { lg } = Grid.useBreakpoint();
@@ -45,8 +45,8 @@ const Dashboard: React.FC = () => {
     (async () => {
       setIsLoading(true);
       try {
-        const resDashboard = await axios.get('/dashboard');
-        const resMhs = await axios.get('/mahasiswa');
+        const resDashboard = await axios.get("/dashboard");
+        const resMhs = await axios.get("/mahasiswa");
 
         console.log(resMhs.data);
 
@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
           )
             return;
 
-          return mhs.lastIdentification.problem[0].code === 'KG1';
+          return mhs.lastIdentification.problem[0].code === "KG1";
         });
 
         const mhsSedang = resMhs.data.filter((mhs: any) => {
@@ -69,7 +69,7 @@ const Dashboard: React.FC = () => {
           )
             return;
 
-          return mhs.lastIdentification.problem[0].code === 'KG2';
+          return mhs.lastIdentification.problem[0].code === "KG2";
         });
 
         const mhsTinggi = resMhs.data.filter((mhs: any) => {
@@ -80,10 +80,10 @@ const Dashboard: React.FC = () => {
           )
             return;
 
-          return mhs.lastIdentification.problem[0].code === 'KG3';
+          return mhs.lastIdentification.problem[0].code === "KG3";
         });
 
-        console.log('tinggi', mhsTinggi);
+        console.log("tinggi", mhsTinggi);
 
         setDataPotensi({
           mhsRendah: mhsRendah?.length,
@@ -118,10 +118,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="right">
-                  <Button
-                    icon={<RightOutlined />}
-                    onClick={() => navigate(`/mahasiswa`)}
-                  />
+                  <Button icon={<RightOutlined />} onClick={() => navigate(`/mahasiswa`)} />
                 </div>
               </CustomCard>
             </Col>
@@ -138,10 +135,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="right">
-                    <Button
-                      icon={<RightOutlined />}
-                      onClick={() => navigate(`/mahasiswa`)}
-                    />
+                    <Button icon={<RightOutlined />} onClick={() => navigate(`/mahasiswa`)} />
                   </div>
                 </CustomCard>
               </Col>
@@ -159,10 +153,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="right">
-                  <Button
-                    icon={<RightOutlined />}
-                    onClick={() => navigate(`/kategori-do`)}
-                  />
+                  <Button icon={<RightOutlined />} onClick={() => navigate(`/kategori-do`)} />
                 </div>
               </CustomCard>
             </Col>
@@ -178,10 +169,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="right">
-                  <Button
-                    icon={<RightOutlined />}
-                    onClick={() => navigate(`/gejala-do`)}
-                  />
+                  <Button icon={<RightOutlined />} onClick={() => navigate(`/gejala-do`)} />
                 </div>
               </CustomCard>
             </Col>
@@ -197,10 +185,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="right">
-                  <Button
-                    icon={<RightOutlined />}
-                    onClick={() => navigate(`/gejala-do`)}
-                  />
+                  <Button icon={<RightOutlined />} onClick={() => navigate(`/gejala-do`)} />
                 </div>
               </CustomCard>
             </Col>
@@ -208,13 +193,13 @@ const Dashboard: React.FC = () => {
           <div
             style={{
               marginTop: lg ? 70 : 50,
-              display: 'flex',
-              justifyContent: 'center',
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             <div
               style={{
-                width: lg ? '80%' : '90%',
+                width: lg ? "80%" : "90%",
               }}
             >
               <Row
@@ -227,16 +212,16 @@ const Dashboard: React.FC = () => {
                   <div
                     style={{
                       paddingBottom: 10,
-                      borderBottom: '4px solid #5e81c7',
+                      borderBottom: "4px solid #5e81c7",
                     }}
                   >
                     <Typography.Text
                       style={{
                         fontSize: 32,
-                        fontWeight: 'bold',
-                        color: '#5e81c7',
-                        display: 'block',
-                        textAlign: 'center',
+                        fontWeight: "bold",
+                        color: "#5e81c7",
+                        display: "block",
+                        textAlign: "center",
                       }}
                     >
                       Overview Potensi DO
@@ -248,12 +233,8 @@ const Dashboard: React.FC = () => {
                     <Typography.Text className="title" strong>
                       Potensi Rendah
                     </Typography.Text>
-                    <Typography.Text className="count">
-                      {dataPotensi?.mhsRendah}
-                    </Typography.Text>
-                    <Typography.Text className="subtitle">
-                      Mahasiswa
-                    </Typography.Text>
+                    <Typography.Text className="count">{dataPotensi?.mhsRendah}</Typography.Text>
+                    <Typography.Text className="subtitle">Mahasiswa</Typography.Text>
                   </CustomCard2>
                 </Col>
                 <Col span={24} xl={8} lg={12}>
@@ -261,12 +242,8 @@ const Dashboard: React.FC = () => {
                     <Typography.Text className="title" strong>
                       Potensi Sedang
                     </Typography.Text>
-                    <Typography.Text className="count">
-                      {dataPotensi?.mhsSedang}
-                    </Typography.Text>
-                    <Typography.Text className="subtitle">
-                      Mahasiswa
-                    </Typography.Text>
+                    <Typography.Text className="count">{dataPotensi?.mhsSedang}</Typography.Text>
+                    <Typography.Text className="subtitle">Mahasiswa</Typography.Text>
                   </CustomCard2>
                 </Col>
                 <Col span={24} xl={8} lg={12}>
@@ -274,12 +251,8 @@ const Dashboard: React.FC = () => {
                     <Typography.Text className="title" strong>
                       Potensi Tinggi
                     </Typography.Text>
-                    <Typography.Text className="count">
-                      {dataPotensi?.mhsTinggi}
-                    </Typography.Text>
-                    <Typography.Text className="subtitle">
-                      Mahasiswa
-                    </Typography.Text>
+                    <Typography.Text className="count">{dataPotensi?.mhsTinggi}</Typography.Text>
+                    <Typography.Text className="subtitle">Mahasiswa</Typography.Text>
                   </CustomCard2>
                 </Col>
               </Row>
@@ -296,7 +269,7 @@ const Dashboard: React.FC = () => {
 const CustomCard2 = styled(Card)<{ bgColor?: string }>`
   height: 200px;
 
-  background-color: ${(props) => props.bgColor ?? '#fff'};
+  background-color: ${(props) => props.bgColor ?? "#fff"};
 
   .ant-card-body {
     display: flex;
