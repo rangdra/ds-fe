@@ -1,16 +1,10 @@
-import { Button, Form, Grid, Input } from 'antd';
-import IllustLogin from '../../assets/illust-admin.png';
-import GoogleIcon from '../../assets/google-icon.png';
-import { useGlobalContext } from '../../context/GlobalContext';
-import Logo from '../../assets/logo-pranata.png';
+import { Button, Form, Grid, Input } from "antd";
+import IllustLogin from "../../assets/illust-admin.png";
+import GoogleIcon from "../../assets/google-icon.png";
+import { useGlobalContext } from "../../context/GlobalContext";
+import Logo from "../../assets/logo-pranata.png";
 
-import {
-  AuthContainer,
-  ButtonSubmit,
-  FormContainer,
-  FormWrapper,
-  ImageContainer,
-} from './styles';
+import { AuthContainer, ButtonSubmit, FormContainer, FormWrapper, ImageContainer } from "./styles";
 
 export default function AdminLoginScreen() {
   const { lg } = Grid.useBreakpoint();
@@ -23,13 +17,8 @@ export default function AdminLoginScreen() {
   return (
     <AuthContainer>
       <FormContainer>
-        <FormWrapper
-          name="basic"
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-        >
-          {' '}
+        <FormWrapper name="basic" onFinish={onFinish} autoComplete="off" layout="vertical">
+          {" "}
           <div className="flex justify-center">
             <img src={Logo} alt="logo" className="h-[90px] w-[90px] mb-4" />
           </div>
@@ -52,7 +41,7 @@ export default function AdminLoginScreen() {
             rules={[
               {
                 required: true,
-                message: 'Silahkan masukan nama pengguna anda!',
+                message: "Silahkan masukan nama pengguna anda!",
               },
             ]}
           >
@@ -61,29 +50,15 @@ export default function AdminLoginScreen() {
           <Form.Item
             label="Password"
             name="password"
-            rules={[
-              { required: true, message: 'Silahkan masukan password anda!' },
-            ]}
+            rules={[{ required: true, message: "Silahkan masukan password anda!" }]}
           >
             <Input.Password size="large" />
           </Form.Item>
           <Form.Item style={{ marginBottom: 8 }}>
-            <ButtonSubmit
-              type="primary"
-              htmlType="submit"
-              // size="large"
-              loading={loading}
-            >
+            <ButtonSubmit type="primary" htmlType="submit" loading={loading}>
               Submit
             </ButtonSubmit>
           </Form.Item>
-          {/* <p className="or">atau</p>
-          <ButtonGoogle onClick={loginWithGoogle}>
-            <img src={GoogleIcon} alt="google-icon" /> Masuk dengan Google
-          </ButtonGoogle> */}
-          {/* <TextQuestion>
-            Belum punya akun? <TextLink to="/register">Daftar</TextLink>
-          </TextQuestion> */}
         </FormWrapper>
       </FormContainer>
 
